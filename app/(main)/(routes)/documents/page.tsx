@@ -1,17 +1,17 @@
 "use client";
 
-import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "convex/react";
 import { PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+import { useCurrentUser } from "@/components/auth-wrapper";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 
 const DocumentsPage = () => {
-  const { user } = useUser();
+  const { user } = useCurrentUser();
   const router = useRouter();
   const create = useMutation(api.documents.create);
 

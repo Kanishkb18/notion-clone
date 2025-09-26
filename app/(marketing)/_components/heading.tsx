@@ -1,16 +1,21 @@
 "use client";
 
 import { SignUpButton } from "@clerk/clerk-react";
-import { useConvexAuth } from "convex/react";
 import { ArrowRight, Github } from "lucide-react";
 import Link from "next/link";
 
+import { useAuthMode } from "@/hooks/use-auth-mode";
+import { useCurrentUser } from "@/components/auth-wrapper";
 import { Spinner } from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 import { links } from "@/config";
 
 export const Heading = () => {
-  const { isAuthenticated, isLoading } = useConvexAuth();
+  const { user, isLoaded } = useCurrentUser();
+  const { isTestMode } = useAuthMode();
+  
+  const isAuthenticated = !!user;
+  const isLoading = !isLoaded;
 
   return (
     <div className="max-w-3xl space-y-4">
@@ -36,11 +41,21 @@ export const Heading = () => {
         )}
 
         {!isAuthenticated && !isLoading && (
-          <SignUpButton mode="modal">
-            <Button>
-              Get Jotion free <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          </SignUpButton>
+          <>
+            {isTestMode ? (
+              <Button asChild>
+                <Link href="/documents">
+                  Enter Jotion (Test Mode) <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </Button>
+            ) : (
+              <SignUpButton mode="modal">
+                <Button>
+                  Get Jotion free <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </SignUpButton>
+            )}
+          </>
         )}
 
         <Button variant="link" asChild>

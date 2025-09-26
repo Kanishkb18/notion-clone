@@ -1,11 +1,11 @@
 "use client";
 
-import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "convex/react";
 import { File } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { useCurrentUser } from "@/components/auth-wrapper";
 import {
   CommandDialog,
   CommandEmpty,
@@ -18,7 +18,7 @@ import { api } from "@/convex/_generated/api";
 import { useSearch } from "@/hooks/use-search";
 
 export const SearchCommand = () => {
-  const { user } = useUser();
+  const { user } = useCurrentUser();
   const router = useRouter();
   const documents = useQuery(api.documents.getSearch);
   const [isMounted, setIsMounted] = useState(false);

@@ -3,6 +3,8 @@
 import { SignOutButton, useUser } from "@clerk/clerk-react";
 import { ChevronsLeftRight, LogOut } from "lucide-react";
 
+import { useCurrentUser } from "@/components/auth-wrapper";
+import { useAuthMode } from "@/hooks/use-auth-mode";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -13,7 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export const UserItem = () => {
-  const { user } = useUser();
+  const { user } = useCurrentUser();
+  const { isTestMode } = useAuthMode();
 
   return (
     <DropdownMenu>
@@ -60,17 +63,29 @@ export const UserItem = () => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem
-          className="w-full cursor-pointer text-muted-foreground"
-          asChild
-        >
-          <SignOutButton>
+        {isTestMode ? (
+          <DropdownMenuItem
+            className="w-full cursor-pointer text-muted-foreground"
+            onClick={() => window.location.reload()}
+          >
             <span>
-              Log out
+              Refresh (Test Mode)
               <LogOut className="h-4 w-4 ml-2" />
             </span>
-          </SignOutButton>
-        </DropdownMenuItem>
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem
+            className="w-full cursor-pointer text-muted-foreground"
+            asChild
+          >
+            <SignOutButton>
+              <span>
+                Log out
+                <LogOut className="h-4 w-4 ml-2" />
+              </span>
+            </SignOutButton>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

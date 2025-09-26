@@ -6,6 +6,7 @@ import { ConvexClientProvider } from "@/components/providers/convex-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToasterProvider } from "@/components/providers/toaster-provider";
+import { TestModeToggle } from "@/components/test-mode-toggle";
 import { siteConfig } from "@/config";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 
@@ -38,6 +39,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
               <ToasterProvider />
               <ModalProvider />
               {children}
+              <TestModeToggle />
             </EdgeStoreProvider>
           </ConvexClientProvider>
         </ThemeProvider>

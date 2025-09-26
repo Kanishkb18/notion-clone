@@ -1,9 +1,10 @@
 "use client";
 
 import { SignInButton, UserButton } from "@clerk/clerk-react";
-import { useConvexAuth } from "convex/react";
 import Link from "next/link";
 
+import { useAuthMode } from "@/hooks/use-auth-mode";
+import { useCurrentUser } from "@/components/auth-wrapper";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Spinner } from "@/components/spinner";
@@ -13,8 +14,12 @@ import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 
 export const Navbar = () => {
-  const { isAuthenticated, isLoading } = useConvexAuth();
+  const { user, isLoaded } = useCurrentUser();
+  const { isTestMode } = useAuthMode();
   const scrolled = useScrollTop();
+  
+  const isAuthenticated = !!user;
+  const isLoading = !isLoaded;
 
   return (
     <div
@@ -30,15 +35,23 @@ export const Navbar = () => {
 
         {!isAuthenticated && !isLoading && (
           <>
-            <SignInButton mode="modal">
-              <Button variant="ghost" size="sm">
-                Log in
-              </Button>
-            </SignInButton>
+            {!isTestMode && (
+              <SignInButton mode="modal">
+                <Button variant="ghost" size="sm">
+                  Log in
+                </Button>
+              </SignInButton>
+            )}
 
-            <SignInButton mode="modal">
-              <Button size="sm">Get Jotion free</Button>
-            </SignInButton>
+            {isTestMode ? (
+              <Button size="sm" asChild>
+                <Link href="/documents">Enter Jotion (Test Mode)</Link>
+              </Button>
+            ) : (
+              <SignInButton mode="modal">
+                <Button size="sm">Get Jotion free</Button>
+              </SignInButton>
+            )}
           </>
         )}
 
@@ -48,7 +61,7 @@ export const Navbar = () => {
               <Link href="/documents">Enter Jotion</Link>
             </Button>
 
-            <UserButton afterSignOutUrl="/" />
+            {!isTestMode && <UserButton afterSignOutUrl="/" />}
           </>
         )}
 

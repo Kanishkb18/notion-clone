@@ -1,6 +1,5 @@
 "use client";
 
-import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "convex/react";
 import {
   ChevronDown,
@@ -14,6 +13,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
+import { useCurrentUser } from "@/components/auth-wrapper";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,7 +51,7 @@ export const Item = ({
   onExpand,
   expanded,
 }: ItemProps) => {
-  const { user } = useUser();
+  const { user } = useCurrentUser();
   const router = useRouter();
   const create = useMutation(api.documents.create);
   const archive = useMutation(api.documents.archive);

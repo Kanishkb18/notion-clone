@@ -1,11 +1,11 @@
 "use client";
 
-import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "convex/react";
 import { MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+import { useCurrentUser } from "@/components/auth-wrapper";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,7 +25,7 @@ type MenuProps = {
 
 export const Menu = ({ documentId, isArchived }: MenuProps) => {
   const router = useRouter();
-  const { user } = useUser();
+  const { user } = useCurrentUser();
   const archive = useMutation(api.documents.archive);
   const remove = useMutation(api.documents.remove);
 
